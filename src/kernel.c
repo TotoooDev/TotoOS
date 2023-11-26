@@ -60,7 +60,7 @@ size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
 
-void terminal_initialize() {
+void terminal_initialize(void) {
     terminal_row = 0;
     terminal_column = 0;
     terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
@@ -79,21 +79,49 @@ void terminal_set_color(uint8_t color) {
 }
 
 void terminal_put_entry_at(char entry, uint8_t color, size_t x, size_t y) {
-    const size_t index= y * VGA_WIDTH + x;
+    const size_t index = y * VGA_WIDTH + x;
     terminal_buffer[index] = vga_entry(entry, color);
 }
 
+void terminal_scroll(void) {
+    // Offset all the lines by one row up
+    for (size_t y = 1; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t index = y * VGA_WIDTH + x;
+            const size_t upper_index = (y - 1) * VGA_WIDTH + x;
+            terminal_buffer[upper_index] = terminal_buffer[index];
+        }
+    }
+
+    // Print a blank line at the bottom
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+        const size_t index = (VGA_HEIGHT - 1) * VGA_WIDTH + x;
+        terminal_buffer[index] = '\0';
+    }
+}
+
+void terminal_new_line(void) {
+    terminal_column = 0;
+    // If the next line is out of the terminal range, scroll the screen
+    if (terminal_row + 1 >= VGA_HEIGHT)
+        terminal_scroll();
+    else
+        terminal_row++;
+}
+
 void terminal_put_char(char entry) {
+    // Newline check
+    if (entry == '\n')
+    {
+        terminal_new_line();
+        return;
+    }
+
     terminal_put_entry_at(entry, terminal_color, terminal_column, terminal_row);
 
     terminal_column++;
     if (terminal_column >= VGA_WIDTH) {
-        terminal_column = 0;
-        terminal_row++;
-
-        if (terminal_row >= VGA_HEIGHT) {
-            terminal_row = 0;
-        }
+        terminal_new_line();
     }
 }
 
@@ -106,7 +134,13 @@ void terminal_write_string(const char* str) {
     terminal_write(str, strlen(str));
 }
 
-void kernel_main() {
+void kernel_main(void) {
     terminal_initialize();
-    terminal_write_string("Hello kernel!\n");
+    for (size_t i = 0; i < VGA_HEIGHT; i++)
+        terminal_write_string("TotoOS\n");
+    terminal_write_string("aaa\n");
+    terminal_write_string("bbb\n");
+    terminal_write_string("ccc\n");
+    terminal_write_string("ddd\n");
+    terminal_write_string("wow it scrolls!\n");
 }
