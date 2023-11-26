@@ -1,2 +1,5 @@
-# object files
-obj/
+*.iso
+iso/
+sysroot/
+
+.vscode/
