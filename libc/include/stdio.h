@@ -2,6 +2,7 @@
 #define _LIBC_STDIO_H
 
 #include <sys/cdefs.h>
+#include <stdarg.h>
 
 #define EOF (-1)
 
@@ -9,7 +10,9 @@
 extern "C" {
 #endif
 
-int printf(const char* __restrict formatted_str, ...);
+int vsprintf(char* str, const char* format, va_list parameters);
+int sprintf(char* str, const char* format, ...);
+int printf(const char* str, ...);
 int putchar(int c);
 int puts(const char* str);
 

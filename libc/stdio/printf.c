@@ -14,7 +14,7 @@ static bool print(const char* data, size_t length) {
     return true;
 }
 
-int printf(const char* __restrict formatted_str, ...) {
+int printf(const char* formatted_str, ...) {
     va_list parameters;
     va_start(parameters, formatted_str);
 
