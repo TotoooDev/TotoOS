@@ -81,3 +81,17 @@ void terminal_write(const char* data, size_t size) {
 void terminal_write_string(const char* str) {
     terminal_write(str, strlen(str));
 }
+
+// UNSTABLE
+// TODO: Finish this function to enable blinking and underlined text
+void terminal_set_attributes(uint8_t foreground, uint8_t background, bool blink, bool underlined) {
+    uint8_t blink_bit = (uint8_t)blink << 7;
+    uint8_t background_color = (background & 0b00000111) << 4;
+    uint8_t foreground_color = foreground;
+    terminal_color = blink_bit | background_color | foreground_color;
+
+    if (underlined) {
+        uint8_t underline_mask = 0b10001001;
+        terminal_color &= underline_mask;
+    }
+}
