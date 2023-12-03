@@ -23,6 +23,11 @@ int int_to_string_decimal(char* str, int number) {
         length++;
     }
 
+    if (number == 0) {
+        str[length] = '0';
+        length++;
+    }
+
     while (number != 0) {
         int digit = number % 10;
         str[length] = digit + '0';
@@ -50,6 +55,11 @@ int int_to_string_hex(char* str, int number) {
     int length = 0;
 
     char hex_digits[16] = "0123456789abcdef";
+
+    if (number == 0) {
+        str[length] = '0';
+        length++;
+    }
 
     while (number != 0) {
         int digit = number % 16;
