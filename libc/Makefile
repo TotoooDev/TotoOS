@@ -13,7 +13,7 @@ EXEC_PREFIX ?= $(PREFIX)
 INCLUDE_DIR ?= $(PREFIX)/include
 LIB_DIR ?= $(EXEC_PREFIX)/lib
  
-CFLAGS := $(CFLAGS) -ffreestanding -Wall -Wextra
+CFLAGS := $(CFLAGS) -ffreestanding -Wall -Wextra -Werroe
 CPPFLAGS := $(CPPFLAGS) -D__is_libc -Iinclude
 LIBK_CFLAGS := $(CFLAGS)
 LIBK_CPPFLAGS := $(CPPFLAGS) -D__is_libk
