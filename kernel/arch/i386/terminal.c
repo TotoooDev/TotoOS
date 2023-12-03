@@ -25,12 +25,8 @@ void terminal_initialize(void) {
     terminal_column = 0;
     terminal_color = vga_entry_color(VGA_COLOR_WHITE, VGA_COLOR_BLACK);
     terminal_buffer = (uint16_t*)VGA_MEMORY_LOCATION;
-    for (size_t y = 0; y < VGA_HEIGHT; y++) {
-        for (size_t x = 0; x < VGA_WIDTH; x++) {
-            const size_t index = terminal_get_index(x, y);
-            terminal_buffer[index] = vga_entry(' ', terminal_color);
-        }
-    }
+    
+    terminal_clear('\0');
 }
 
 void terminal_set_color(uint8_t color) {
@@ -80,6 +76,15 @@ void terminal_write(const char* data, size_t size) {
 
 void terminal_write_string(const char* str) {
     terminal_write(str, strlen(str));
+}
+
+void terminal_clear(char c) {
+    for (size_t y = 0; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t index = terminal_get_index(x, y);
+            terminal_buffer[index] = vga_entry(c, terminal_color);
+        }
+    }
 }
 
 // UNSTABLE
