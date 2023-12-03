@@ -26,7 +26,7 @@ CFLAGS := $(CFLAGS) $(ARCH_CFLAGS)
 CPPFLAGS := $(CPPFLAGS) $(ARCH_CPPFLAGS)
 LIBK_CFLAGS := $(LIBK_CFLAGS) $(KERNEL_ARCH_CFLAGS)
 LIBK_CPPFLAGS := $(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
- 
+
 FREE_OBJS = $(ARCH_FREE_OBJS) stdio/printf.o stdio/putchar.o stdio/puts.o stdlib/abort.o string/memcmp.o string/memcpy.o string/memmove.o string/memset.o string/strlen.o 
 HOSTED_OBJS = $(ARCH_HOSTED_OBJS) 
 OBJS = $(FREE_OBJS) $(HOSTED_OBJS)
