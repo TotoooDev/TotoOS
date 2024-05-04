@@ -82,6 +82,15 @@ void terminal_initialize(void) {
     }
 }
 
+void terminal_newline(void) {
+    terminal_current_column = 0;
+    terminal_current_row++;
+
+    if (terminal_current_row >= VGA_HEIGHT) {
+        terminal_current_row = 0;
+    }
+}
+
 void terminal_set_color(uint8_t color) {
     terminal_color = color;
 }
@@ -97,12 +106,7 @@ void terminal_put_char(char c) {
 
     // reset the cursor position if we hit the end of a line or the end of the screen
     if (terminal_current_column >= VGA_WIDTH) {
-        terminal_current_column = 0;
-        terminal_current_row++;
-
-        if (terminal_current_row >= VGA_HEIGHT) {
-            terminal_current_row = 0;
-        }
+        terminal_newline();
     }
 }
 
@@ -112,12 +116,26 @@ void terminal_write(const char* data, size_t size) {
     }
 }
 
+void terminal_write_string(const char* str, size_t size) {
+    for (size_t i = 0; i < size; i++) {
+        if (str[i] == '\n') {
+            terminal_newline();
+            continue;
+        }
+
+        terminal_put_char(str[i]);
+    }
+}
+
 void terminal_print(const char* str) {
-    terminal_write(str, strlen(str));
+    terminal_write_string(str, strlen(str));
 }
 
 // entrypoint of our super duper kernel!
 void kernel_main(void) {
     terminal_initialize();
     terminal_print("Hello world!\n");
+    terminal_print("now with newline support!\n");
+    terminal_print("so cool\n");
+    terminal_print("just don't go too far down...\n");
 }
