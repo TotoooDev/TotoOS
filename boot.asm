@@ -1,11 +1,11 @@
 /* mostly stolen from https://wiki.osdev.org/Bare_Bones */
 
 /* constants for the multiboot header */
-.set ALIGN,    1 << 0           /* lign loaded modules on page boundaries */
-.set MEMINFO,  1 << 1           /* rovide the memory map */
-.set FLAGS,    ALIGN | MEMINFO  /* ultiboot flag field */
-.set MAGIC,    0x1badb002       /* ultiboot *magic* number */
-.set CHECKSUM, -(MAGIC + FLAGS) /* hecksum to prove we are multiboot */
+.set ALIGN,    1 << 0           /* align loaded modules on page boundaries */
+.set MEMINFO,  1 << 1           /* provide the memory map */
+.set FLAGS,    ALIGN | MEMINFO  /* multiboot flag field */
+.set MAGIC,    0x1badb002       /* multiboot *magic* number */
+.set CHECKSUM, -(MAGIC + FLAGS) /* checksum to prove we are multiboot */
 
 /* declare the multiboot header */
 /* the bootloader (probably grub) will find this and say "yeah, this is a kernel" */
