@@ -82,12 +82,28 @@ void terminal_initialize(void) {
     }
 }
 
+void terminal_scroll(void) {
+    for (size_t y = 1; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++) {
+            const size_t current_row_index = y * VGA_WIDTH + x;
+            const size_t previous_row_index = (y - 1) * VGA_WIDTH + x;
+
+            terminal_buffer[previous_row_index] = terminal_buffer[current_row_index];
+
+            if (y == terminal_current_row)
+                terminal_buffer[current_row_index] = vga_get_entry(' ', terminal_color);
+        }
+    }
+
+    terminal_current_row--;
+}
+
 void terminal_newline(void) {
     terminal_current_column = 0;
     terminal_current_row++;
 
     if (terminal_current_row >= VGA_HEIGHT) {
-        terminal_current_row = 0;
+        terminal_scroll();
     }
 }
 
@@ -134,8 +150,11 @@ void terminal_print(const char* str) {
 // entrypoint of our super duper kernel!
 void kernel_main(void) {
     terminal_initialize();
-    terminal_print("Hello world!\n");
+    terminal_print("Hello world! (this should disappear because of scrolling)\n");
     terminal_print("now with newline support!\n");
     terminal_print("so cool\n");
     terminal_print("just don't go too far down...\n");
+    
+    for (size_t i = 0; i < 21; i++)
+        terminal_print("scrolling????? :O\n");
 }
